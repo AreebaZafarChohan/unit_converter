@@ -140,7 +140,7 @@ elif unit_type == "⏳ Time Converter":
         st.success(f"{amount} {from_unit} = {result:.4f} {to_unit}")
 
 # elif unit_type == "🤖 Offline AI Chatbot":
-    st.markdown("<h2 style='color: #32CD32;'>🤖 AI Chatbot</h2>", unsafe_allow_html=True)
+#    st.markdown("<h2 style='color: #32CD32;'>🤖 AI Chatbot</h2>", unsafe_allow_html=True)
 #    genai.configure(api_key="AIzaSyAOBr215rP2QAdqdhFNpPwsUKE2Aiojc-s")
 #    model = genai.GenerativeModel("gemini-1.0-pro")
 #    

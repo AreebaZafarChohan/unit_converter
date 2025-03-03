@@ -1,7 +1,6 @@
 import streamlit as st
 import time
 import google.generativeai as genai
-import speech_recognition as sr
 
 # Main Title
 st.markdown(

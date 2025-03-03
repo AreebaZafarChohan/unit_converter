@@ -140,7 +140,7 @@ elif unit_type == "⏳ Time Converter":
         st.success(f"{amount} {from_unit} = {result:.4f} {to_unit}")
 
 elif unit_type == "🤖 Offline AI Chatbot":
-    genai.configure(api_key="AIzaSyDcr1DV3Wq7CeJxqAhlYnwKQScKsPkfByE")
+    genai.configure(api_key="AIzaSyAjMHUKa0kRSCFtoClkY9HlIPd0p9fvjv8")
     model = genai.GenerativeModel("gemini-1.5-pro-latest")
 
     st.title("🤖 Offline AI Chatbot")

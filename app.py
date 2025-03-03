@@ -1,6 +1,7 @@
 import streamlit as st
 import time
 import google.generativeai as genai
+import speech_recognition as sr
 
 # Main Title
 st.markdown(
@@ -16,7 +17,7 @@ unit_type = st.sidebar.radio("Select Conversion Type:", [
     "💧 Liquid Converter",
     "⏳ Time Converter",
     "📐 Area Converter",
-   # "🤖 Offline AI Chatbot"
+    "🤖 Offline AI Chatbot"
 ])
 
 # Conversion Dictionaries
@@ -139,26 +140,46 @@ elif unit_type == "⏳ Time Converter":
         result = amount * (time_units[to_unit] / time_units[from_unit])
         st.success(f"{amount} {from_unit} = {result:.4f} {to_unit}")
 
-# elif unit_type == "🤖 Offline AI Chatbot":
-#    st.markdown("<h2 style='color: #32CD32;'>🤖 AI Chatbot</h2>", unsafe_allow_html=True)
-#    genai.configure(api_key="AIzaSyAOBr215rP2QAdqdhFNpPwsUKE2Aiojc-s")
-#    model = genai.GenerativeModel("gemini-1.0-pro")
-#    
-#    def chat_with_gemini(prompt):
-#        try:
-#            response = model.generate_content(prompt)
-#            if response.candidates and response.candidates[0].content.parts:
-#                return response.candidates[0].content.parts[0].text
-#            else:
-#                return "Sorry, I couldn't generate a valid response. Please try again."
-#        except Exception as e:
-#            return f"An error occurred: {str(e)}"
-#    
-#    user_input = st.text_input("Ask the AI anything:")
-#    if st.button("Chat"):
-#        response = chat_with_gemini(user_input)
-#        st.success(response)        
-     
+elif unit_type == "🤖 Offline AI Chatbot":
+    genai.configure(api_key="AIzaSyDcr1DV3Wq7CeJxqAhlYnwKQScKsPkfByE")
+    model = genai.GenerativeModel("gemini-1.5-pro-latest")
+
+    st.title("🤖 Offline AI Chatbot")
+    
+    if "messages" not in st.session_state:
+        st.session_state.messages = []
+
+    # Display Chat messages from history on app rerun
+    for m in st.session_state.messages:  # Use 'm' instead  of 'message'
+        with st.chat_message(m["role"]):
+            st.markdown(m["content"])
+
+    # React to user input
+    prompt = st.chat_input("Ask me anything...")        
+    if prompt:
+        with st.chat_message("user"):
+            st.markdown(prompt)
+
+        st.session_state.messages.append({"role": "user",   "content": prompt})
+
+        chat_history = [
+            {"role": m["role"], "parts": [m["content"]]}    for m in st.session_state.messages
+        ]
+
+        response = model.generate_content(chat_history)
+
+        full_response = response.text 
+
+        with st.chat_message("assistant"):
+            st.markdown(full_response)
+
+        st.session_state.messages.append({"role":   "assistant", "content":   full_response})              
+
+    # Clear History Button
+    if st.button("🗑️ Clear History"):
+        st.session_state.messages = []
+        st.rerun()
+
 
 # Footer
 st.markdown("""
